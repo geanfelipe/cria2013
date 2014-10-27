@@ -12,8 +12,6 @@ poltrona.shape = (3,21,20)
 matriz_fileira = "ABCDEFGHIJKLMNOPQRSTU"
 
 
-print (poltrona)
-
 def iniciar():
     """
     Inicia todas as poltronas como vazia
@@ -33,8 +31,7 @@ def preencher(sala,fila_numero,numero_poltrona):
         poltrona[sala,fila_numero,numero_poltrona]=1
         return 1
     else:
-        print "lugar já preenchido"
-        print "buscando um mais próximo"
+        print "lugar já preenchido"        
         for i in range(20):
             if poltrona[sala,fila_numero,i]==0:
                 poltrona[sala,fila_numero,i]=1
@@ -48,33 +45,53 @@ def preencher(sala,fila_numero,numero_poltrona):
 print 
 iniciar()
 
-sala=1
 while 1:
-    print matriz_fileira
-    while 1:
-        sala  = int(input("numero da sala: "))
-        if not sala:
-            while 1:
-                try:
-                    print ": "
-                except:
-                    print "inválido"
-        if 0<sala<4: break
-    while 1:
-        fila_letra = str(raw_input("letra da fileira: "))
-        fila_letra = fila_letra.upper()
-        if matriz_fileira.count(fila_letra): break
-    while 1:
-        numero_poltrona = int(input("numero da poltrona: "))-1
-        if 0<=numero_poltrona<21 : break
+    print 'A) comprar ingressso'
+    print 'Q) sair'  
+    opcao = str(raw_input(": "))
 
-    print
+    opcao = opcao.upper()
 
-    fila_numero = matriz_fileira.find(fila_letra)
+    if opcao=='A':
+        print 'escolha o lugar'
+        while 1:
+            try:
+                sala  = int(input("numero da sala: "))
+                if 0<sala<4: break
+                else: print 'não existe'
+            except:
+                print "inválido"
+            
+        while 1:
+            fila_letra = str(raw_input("letra da fileira: "))
+            fila_letra = fila_letra.upper()
+            if not fila_letra:
+                print 'inválido'
+            else:
+                if matriz_fileira.count(fila_letra): break
+                else : print 'não existe'
+        while 1:
+            try:
+                numero_poltrona = int(input("numero da poltrona: "))
+                if 0<numero_poltrona<21 : break
+                else: print 'não existe'
+            except:
+                print 'inválido'
 
-    print "antes: ",poltrona[sala,fila_numero,numero_poltrona]
+        print
 
-    retorno = preencher(sala,fila_numero,numero_poltrona)
-    print "depois: ",poltrona[sala,fila_numero,numero_poltrona]
+        fila_numero = matriz_fileira.find(fila_letra)#saber a posicao do caracter digitado pelo usuário dentro da matriz
 
-    print "retorno da funcao deu " ,retorno
+        sala = sala -1 #posicao da matriz [0 a 2]
+        numero_poltrona = numero_poltrona -1 #posicao da matriz [0 a 19]
+        print ("matriz(%d,%s,%d) %d" %(sala,fila_numero,numero_poltrona, poltrona[sala,fila_numero,numero_poltrona]))
+        print "antes: ",poltrona[sala,fila_numero,numero_poltrona]
+
+        retorno = preencher(sala,fila_numero,numero_poltrona)
+        print "depois: ",poltrona[sala,fila_numero,numero_poltrona]
+
+        print "retorno da funcao deu " ,retorno
+        
+    if opcao =='Q':
+        print 'sair'
+        break
