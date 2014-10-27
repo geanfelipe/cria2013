@@ -22,6 +22,7 @@ def iniciar():
             for numero_poltrona in range(20):
                 poltrona[sala,fila_letra,numero_poltrona]=0
 
+
 def preencher(sala,fila_numero,numero_poltrona):
     """
     preencher os lugares do cinema
@@ -41,12 +42,32 @@ def preencher(sala,fila_numero,numero_poltrona):
         return 0
         
             
+def relatorioDasSalas():
+    """
+    relatório indicando qual a sala mais cheia do momento, qual a sala completamente lotada e qual a sala que mais possui poltronas
+    sobrando nas três ultimas fileiras
+    """
+    sala1,sala2,sala3 = 0,0,0
+    for fileira in range(21):
+        for cadeiras in range(20):
+            if poltrona[0,fileira,cadeiras]==0:
+                sala1+=sala1
+            if poltrona[1,fileira,cadeiras]==0:
+                sala2+=sala2
+            if poltrona[2,fileira,cadeiras]==0:
+                sala3+=sala3
+    if sala1==0: print 'sala 1 completamente lotada'
+    if sala2==0: print 'sala 2 completamente lotada'
+    if sala3==0: print 'sala 3 completamente lotada'
+    
 
-print 
 iniciar()
-
 while 1:
+    print 
     print 'A) comprar ingressso'
+    print 'B) relatório das salas'
+    print 'C) imprimir salas'
+    print 'D) preencher sala 1'
     print 'Q) sair'  
     opcao = str(raw_input(": "))
 
@@ -91,7 +112,19 @@ while 1:
         print "depois: ",poltrona[sala,fila_numero,numero_poltrona]
 
         print "retorno da funcao deu " ,retorno
-        
+
+    if opcao == 'B':
+        relatorioDasSalas()
+
+    if opcao=='C':
+        print poltrona
+        print
+    
+    if opcao=='D':
+        for i in range(21):
+            for j in range(20):
+                poltrona[0,i,j]==1
+    
     if opcao =='Q':
         print 'sair'
         break
