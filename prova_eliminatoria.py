@@ -1,5 +1,5 @@
 ﻿from numpy import *
-#comentario
+#comentario ++
 """
 version- python 2.7.3
 São três salas idênticas com 360 lugares
