@@ -25,6 +25,9 @@ def iniciar():
 def preencher(sala,fila_numero,numero_poltrona):
     """
     preencher os lugares do cinema
+    caso haja lugar já ocupado para a poltrona do usuário
+    a funcao preenche num lugar mais próximo na fileira
+    caso não haja poltronas vazias na fileira o retorno é 0zero
     """
     global poltrona
     if poltrona[sala,fila_numero,numero_poltrona] == 0:
@@ -43,8 +46,9 @@ def preencher(sala,fila_numero,numero_poltrona):
             
 def relatorioDasSalas():
     """
-    relatório indicando qual a sala mais cheia do momento, qual a sala completamente lotada e qual a sala que mais possui poltronas
-    sobrando nas três ultimas fileiras
+    relatório indicando qual a sala mais cheia do momento, qual a
+    sala completamente lotada e qual a sala que mais possui
+    poltronas sobrando nas três ultimas fileiras
     """
     global poltrona
     sala1,sala2,sala3 = 0,0,0
@@ -134,7 +138,8 @@ while 1:
     print 'A) comprar ingressso'
     print 'B) relatório das salas'
     print 'C) imprimir salas'
-    print 'D) preencher sala 1'
+    print 'D) especifique [sala,fileira,poltrona] para imprimir'
+    print 'E) preencher sala 1'
     print 'Q) sair'  
     opcao = str(raw_input(": "))
 
@@ -192,8 +197,41 @@ while 1:
     if opcao=='C':
         print poltrona
         print
-    
+
     if opcao=='D':
+        while 1:
+            try:
+                sala  = int(input("numero da sala: "))
+                if 0<sala<4 or sala==10: break
+                else: print '#não existe'
+            except:
+                print "#inválido"
+        while 1:
+            fila_letra = str(raw_input("letra da fileira: "))
+            fila_letra = fila_letra.upper()
+            if not fila_letra:
+                print '#inválido'
+            else:
+                if matriz_fileira.count(fila_letra): break
+                else : print '#não existe'
+        while 1:
+            posicoes_restringida='ABCDE'  #fileiras que possuem apenas poltronas de 1 a 8
+            try:
+                
+                numero_poltrona = int(input("numero da poltrona: "))
+                if posicoes_restringida.count(fila_letra):  # se a letra inserida no loop acima existir na matriz posicoes_restringidas entao só poltronas só podem ser de 1 a 9
+                    if 0<numero_poltrona<9: break
+                    else: print '#fileira %s poltronas apenas de 1 a 8' %fila_letra
+                else:
+                    if 0<numero_poltrona<21 : break
+                    else: print '#não existe'
+            except:
+                print '#inválido'
+        
+        fila_numero = matriz_fileira.find(fila_letra)#saber a posicao do caracter digitado pelo usuário dentro da matriz
+        print 'poltrona[%d,%d,%d] = %d' %(sala,fila_numero,numero_poltrona,poltrona[sala-1,fila_numero,numero_poltrona-1])
+    
+    if opcao=='E':
         global poltrona
         for i in range(21):
             for j in range(20):
