@@ -29,14 +29,14 @@ def preencher(sala,fila_numero,numero_poltrona):
     a funcao preenche num lugar mais próximo na fileira
     caso não haja poltronas vazias na fileira o retorno é 0zero
     """
-   
+    global poltrona
     if poltrona[sala,fila_numero,numero_poltrona] == 0:
         poltrona[sala,fila_numero,numero_poltrona]=1
         return 1
     else:
         print "lugar já preenchido"        
         for i in range(20):
-            if poltrona[sala,fila_numero,i]==0:
+            if poltrona[sala,fila_numero,i]==1:
                 poltrona[sala,fila_numero,i]=1
                 print "preenchido na posicao %d da fileira %s " %(i+1,matriz_fileira[fila_numero])
                 return 1
@@ -229,9 +229,10 @@ while 1:
                 print '#inválido'
         
         fila_numero = matriz_fileira.find(fila_letra)#saber a posicao do caracter digitado pelo usuário dentro da matriz
-        print 'poltrona[%d,%d,%d] = %d' %(sala-1,fila_numero,numero_poltrona-1,poltrona[sala-1,fila_numero,numero_poltrona-1])
+        print 'poltrona[%d,%d,%d] = %d' %(sala,fila_numero,numero_poltrona,poltrona[sala-1,fila_numero,numero_poltrona-1])
     
     if opcao=='E':
+        global poltrona
         for i in range(21):
             for j in range(20):
                 poltrona[0,i,j]=1
