@@ -31,38 +31,68 @@ def preencher(sala,fila_numero,numero_poltrona):
     caso não haja poltronas vazias na fileira o retorno é 0zero
     """
     global poltrona
-    #posicao 0 para poltrona mais próxima ascendente
-    #posicao 1 para poltrona mais próxima descendente
+    #posicao 0 para poltrona mais próxima ascendente/depois da escolhida
+    #posicao 1 para poltrona mais próxima descendente/antes da escolhida
     poltrona_mais_proxima= [0,0]
     
     if poltrona[sala,fila_numero,numero_poltrona] == 0:
         poltrona[sala,fila_numero,numero_poltrona]=1
         return 1
     else:
-        print "lugar já preenchido"
+        print "%%lugar já preenchido"
         if fila_numero<5: #se fileira é de A a E
             for i in range(numero_poltrona,8): # da posicao ocupada escolhida pelo usuário até a 8, que na verdade é 7 -> 0 a 7
-                if poltrona[sala,fila_numero,i]==1:
+                if poltrona[sala,fila_numero,i]==0:
                    poltrona_mais_proxima[0]=i
                    break
             for i in range(numero_poltrona,-1,-1): # da posicao ocupada escolhida pelo usuário até a 0
-                if poltrona[sala,fila_numero,i]==1:
+                if poltrona[sala,fila_numero,i]==0:
                    poltrona_mais_proxima[1]=i
                    break
         else:  # se a fileira é de F em diante
             for i in range(numero_poltrona,20): # da posicao ocupada escolhida pelo usuário até a 8, que na verdade é 7 -> 0 a 7
-                if poltrona[sala,fila_numero,i]==1:
+                if poltrona[sala,fila_numero,i]==0:
                    poltrona_mais_proxima[0]=i
                    break
             for i in range(numero_poltrona,-1,-1): # da posicao ocupada escolhida pelo usuário até a 0
-                if poltrona[sala,fila_numero,i]==1:
+                if poltrona[sala,fila_numero,i]==0:
                    poltrona_mais_proxima[1]=i
                    break
 
         if poltrona_mais_proxima[0]==0 and poltrona_mais_proxima[1]==0:
             print 'nao há poltronas disponiveis mais nesta fileira'
             return 0
-        if poltrona ##TERMINAR ##
+
+        if poltrona_mais_proxima[0]==0 and poltrona_mais_proxima[1]:
+            poltrona[sala,fila_numero,poltrona_mais_proxima[1]]=1
+            print 'preenchido na poltrona mais próxima posição %d\nmatriz(%d,%d,%d) ' %(poltrona_mais_proxima[1]+1,sala,fila_numero,poltrona_mais_proxima[1])
+            return 1
+
+        if poltrona_mais_proxima[1]==0 and poltrona_mais_proxima[0]:
+            poltrona[sala,fila_numero,poltrona_mais_proxima[0]]=1
+            print 'preenchido na poltrona mais próxima posição %d\nmatriz(%d,%d,%d) ' %(poltrona_mais_proxima[0]+1,sala,fila_numero,poltrona_mais_proxima[0])
+            return 1
+        
+        if poltrona_mais_proxima[0] and poltrona_mais_proxima[1]:
+            lugar_mais_proximo_antes, lugar_mais_proximo_depois = numero_poltrona - poltrona_mais_proxima[1], poltrona_mais_proxima[0]-numero_poltrona
+
+            if lugar_mais_proximo_antes > lugar_mais_proximo_depois:
+                poltrona[sala,fila_numero,poltrona_mais_proxima[1]]=1
+                print 'preenchido na poltrona mais próxima posição %d\nmatriz(%d,%d,%d) ' %(poltrona_mais_proxima[1]+1,sala,fila_numero,poltrona_mais_proxima[1])
+                return 1
+
+            elif lugar_mais_proximo_depois > lugar_mais_proximo_antes:
+                poltrona[sala,fila_numero,poltrona_mais_proxima[0]]=1
+                print 'preenchido na poltrona mais próxima posição %d\nmatriz(%d,%d,%d) ' %(poltrona_mais_proxima[0]+1,sala,fila_numero,poltrona_mais_proxima[0])
+                return 1
+            
+            #caso os dois valores sejam iguais (poltrona_mais_proxima[0]==poltrona_mais_proxima[1]) entao preencha na poltrona mais
+            #proxima seguinte
+            else:
+                poltrona[sala,fila_numero,poltrona_mais_proxima[0]]=1
+                print 'preenchido na poltrona mais próxima posição %d\nmatriz(%d,%d,%d)' %(poltrona_mais_proxima[0]+1,sala,fila_numero,poltrona_mais_proxima[0])
+                return 1
+                
         
             
 def relatorioDasSalas():
