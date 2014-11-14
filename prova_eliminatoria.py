@@ -11,6 +11,7 @@ São três salas idênticas com 360 lugares
 poltrona = arange(1260)  #matriz dos lugares //principal
 poltrona.shape = (3,21,20)
 matriz_fileira = "ABCDEFGHIJKLMNOPQRSTU"
+faturamentoSala1,faturamentoSala2,faturamentoSala3=0,0,0
 
 def iniciar():
     """
@@ -23,7 +24,7 @@ def iniciar():
                 poltrona[sala,fila_letra,numero_poltrona]=0
 
 
-def preencher(sala,fila_numero,numero_poltrona):
+def preencher(sala,fila_numero,numero_poltrona,valorEntrada=0):
     """
     preencher os lugares do cinema
     caso haja lugar já ocupado para a poltrona do usuário
@@ -34,12 +35,12 @@ def preencher(sala,fila_numero,numero_poltrona):
     #posicao 0 para poltrona mais próxima ascendente/depois da escolhida
     #posicao 1 para poltrona mais próxima descendente/antes da escolhida
     poltrona_mais_proxima= [0,0]
-    
+     
     if poltrona[sala,fila_numero,numero_poltrona] == 0:
         poltrona[sala,fila_numero,numero_poltrona]=1
         return 1
     else:
-        print "%%lugar já preenchido"
+        print "#lugar já preenchido"
         if fila_numero<5: #se fileira é de A a E
             for i in range(numero_poltrona,8): # da posicao ocupada escolhida pelo usuário até a 8, que na verdade é 7 -> 0 a 7
                 if poltrona[sala,fila_numero,i]==0:
@@ -198,6 +199,31 @@ while 1:
 
     if opcao=='A':
         print 'escolha o lugar'
+        #verificar se já há salas completamente lotadas, pra que assim que o usuário escolher a opcao de preencher ele já possa ficar
+        #ciente de que há uma sala indisponível
+        sala1,sala2,sala3=0,0,0
+        
+        for x in range(21):
+            for y in range(20):
+                if poltrona[0,x,y]==1: sala1+=1
+                if poltrona[1,x,y]==1: sala2+=1
+                if poltrona[2,x,y]==1: sala3+=1
+        if sala1==420: print '#sala 1 completamente lotada'
+        if sala2==420: print '#sala 2 completamente lotada'
+        if sala3==420: print '#sala 3 completamente lotada'
+
+        while 1:
+            meiaEntrada= str(raw_input("Meia entrada[S/N]: "))
+            meiaEntrada = meiaEntrada.upper()
+            if not meiaEntrada:
+                print '#inválido'
+            else:
+                if meiaEntrada=='S' or meiaEntrada=='N':
+                    if meiaEntrada=='S': opcao=1
+                    else: opcao=2
+                    break
+                else : print '#não existe'
+
         while 1:
             try:
                 sala  = int(input("numero da sala: "))
@@ -227,6 +253,7 @@ while 1:
                     else: print '#não existe'
             except:
                 print '#inválido'
+        
 
         print
 
@@ -280,13 +307,15 @@ while 1:
                 print '#inválido'
         
         fila_numero = matriz_fileira.find(fila_letra)#saber a posicao do caracter digitado pelo usuário dentro da matriz
-        print 'poltrona[%d,%d,%d] = %d' %(sala,fila_numero,numero_poltrona,poltrona[sala-1,fila_numero,numero_poltrona-1])
+        print 'poltrona[%d,%d,%d] = %d' %(sala,fila_numero+1,numero_poltrona,poltrona[sala-1,fila_numero,numero_poltrona-1])
     
     if opcao=='E':
-        global poltrona
         for i in range(21):
             for j in range(20):
                 poltrona[0,i,j]=1
+
+    if opcao=='F':
+        b=1
     
     if opcao =='Q':
         print 'sair'
