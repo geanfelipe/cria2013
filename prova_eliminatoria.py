@@ -11,21 +11,23 @@ São três salas idênticas com 360 lugares
 poltrona = arange(1260)  #matriz dos lugares //principal
 poltrona.shape = (3,21,20)
 matriz_fileira = "ABCDEFGHIJKLMNOPQRSTU"
-faturamentoSala1,faturamentoSala2,faturamentoSala3=0,0,0
+faturamentoSala=arange(1260)
+faturamentoSala.shape=(3,21,20)
 
 def iniciar():
     """
     Inicia todas as poltronas como vazia
     """
-    global poltrona
+    
     for sala in range(3):
         for fila_letra in range(21):
             for numero_poltrona in range(20):
-                poltrona[sala,fila_letra,numero_poltrona]=0
+                poltrona[sala,fila_letra,numero_poltrona],faturamentoSala[sala,fila_letra,numero_poltrona]=0,0.0              
 
 
-def preencher(sala,fila_numero,numero_poltrona,valorEntrada=0):
+def preencher(sala,fila_numero,numero_poltrona,meiaEntrada=' '):
     """
+    calcula 
     preencher os lugares do cinema
     caso haja lugar já ocupado para a poltrona do usuário
     a funcao preenche num lugar mais próximo na fileira
@@ -38,6 +40,8 @@ def preencher(sala,fila_numero,numero_poltrona,valorEntrada=0):
      
     if poltrona[sala,fila_numero,numero_poltrona] == 0:
         poltrona[sala,fila_numero,numero_poltrona]=1
+        if meiaEntrada=='N': faturamentoSala[sala,fila_numero,numero_poltrona] = 18.50
+        if meiaEntrada=='S': faturamentoSala[sala,fila_numero,numero_poltrona] = 9.25
         return 1
     else:
         print "#lugar já preenchido"
@@ -67,11 +71,15 @@ def preencher(sala,fila_numero,numero_poltrona,valorEntrada=0):
         if poltrona_mais_proxima[0]==0 and poltrona_mais_proxima[1]:
             poltrona[sala,fila_numero,poltrona_mais_proxima[1]]=1
             print 'preenchido na poltrona mais próxima posição %d\nmatriz(%d,%d,%d) ' %(poltrona_mais_proxima[1]+1,sala,fila_numero,poltrona_mais_proxima[1])
+            if meiaEntrada=='N': faturamentoSala[sala,fila_numero,poltrona_mais_proxima[1]] = 18.50
+            if meiaEntrada=='S': faturamentoSala[sala,fila_numero,poltrona_mais_proxima[1]] = 9.25
             return 1
 
         if poltrona_mais_proxima[1]==0 and poltrona_mais_proxima[0]:
             poltrona[sala,fila_numero,poltrona_mais_proxima[0]]=1
             print 'preenchido na poltrona mais próxima posição %d\nmatriz(%d,%d,%d) ' %(poltrona_mais_proxima[0]+1,sala,fila_numero,poltrona_mais_proxima[0])
+            if meiaEntrada=='N': faturamentoSala[sala,fila_numero,poltrona_mais_proxima[0]] = 18.50
+            if meiaEntrada=='S': faturamentoSala[sala,fila_numero,poltrona_mais_proxima[0]] = 9.25
             return 1
         
         if poltrona_mais_proxima[0] and poltrona_mais_proxima[1]:
@@ -80,11 +88,15 @@ def preencher(sala,fila_numero,numero_poltrona,valorEntrada=0):
             if lugar_mais_proximo_antes > lugar_mais_proximo_depois:
                 poltrona[sala,fila_numero,poltrona_mais_proxima[1]]=1
                 print 'preenchido na poltrona mais próxima posição %d\nmatriz(%d,%d,%d) ' %(poltrona_mais_proxima[1]+1,sala,fila_numero,poltrona_mais_proxima[1])
+                if meiaEntrada=='N': faturamentoSala[sala,fila_numero,poltrona_mais_proxima[1]] = 18.50
+                if meiaEntrada=='S': faturamentoSala[sala,fila_numero,poltrona_mais_proxima[1]] = 9.25
                 return 1
 
             elif lugar_mais_proximo_depois > lugar_mais_proximo_antes:
                 poltrona[sala,fila_numero,poltrona_mais_proxima[0]]=1
                 print 'preenchido na poltrona mais próxima posição %d\nmatriz(%d,%d,%d) ' %(poltrona_mais_proxima[0]+1,sala,fila_numero,poltrona_mais_proxima[0])
+                if meiaEntrada=='N': faturamentoSala[sala,fila_numero,poltrona_mais_proxima[0]] = 18.50
+                if meiaEntrada=='S': faturamentoSala[sala,fila_numero,poltrona_mais_proxima[0]] = 9.25
                 return 1
             
             #caso os dois valores sejam iguais (poltrona_mais_proxima[0]==poltrona_mais_proxima[1]) entao preencha na poltrona mais
@@ -92,6 +104,8 @@ def preencher(sala,fila_numero,numero_poltrona,valorEntrada=0):
             else:
                 poltrona[sala,fila_numero,poltrona_mais_proxima[0]]=1
                 print 'preenchido na poltrona mais próxima posição %d\nmatriz(%d,%d,%d)' %(poltrona_mais_proxima[0]+1,sala,fila_numero,poltrona_mais_proxima[0])
+                if meiaEntrada=='N': faturamentoSala[sala,fila_numero,poltrona_mais_proxima[0]] = 18.50
+                if meiaEntrada=='S': faturamentoSala[sala,fila_numero,poltrona_mais_proxima[0]] = 9.25
                 return 1
                 
         
@@ -192,6 +206,7 @@ while 1:
     print 'C) imprimir salas'
     print 'D) especifique [sala,fileira,poltrona] para imprimir'
     print 'E) preencher sala 1'
+    print 'F) faturamento da sala'
     print 'Q) sair'  
     opcao = str(raw_input(": "))
 
@@ -218,10 +233,7 @@ while 1:
             if not meiaEntrada:
                 print '#inválido'
             else:
-                if meiaEntrada=='S' or meiaEntrada=='N':
-                    if meiaEntrada=='S': opcao=1
-                    else: opcao=2
-                    break
+                if meiaEntrada=='S' or meiaEntrada=='N': break
                 else : print '#não existe'
 
         while 1:
@@ -264,7 +276,7 @@ while 1:
         print ("matriz(%d,%s,%d) %d" %(sala,fila_numero,numero_poltrona, poltrona[sala,fila_numero,numero_poltrona]))
         print "antes: ",poltrona[sala,fila_numero,numero_poltrona]
 
-        retorno = preencher(sala,fila_numero,numero_poltrona)
+        retorno = preencher(sala,fila_numero,numero_poltrona,meiaEntrada)
         print "depois: ",poltrona[sala,fila_numero,numero_poltrona]
 
         print "retorno da funcao deu " ,retorno
@@ -315,7 +327,31 @@ while 1:
                 poltrona[0,i,j]=1
 
     if opcao=='F':
-        b=1
+        totalMeiaEntrada=0
+        total=0.0
+        while 1:
+            try:
+                sala  = int(input("numero da sala: "))
+                if 0<sala<4 or sala==10: break
+                else: print '#não existe'
+            except:
+                print "#inválido"
+        sala -=1
+        for i in range(21):
+            for j in range(20):
+                if faturamentoSala[sala,i,j]==9:
+                    totalMeiaEntrada +=faturamentoSala[sala,i,j]+0.25
+                    total += totalMeiaEntrada
+                if faturamentoSala[sala,i,j]==18:
+                    total += faturamentoSala[sala,i,j]+0.5
+        print totalMeiaEntrada,total
+        if totalMeiaEntrada>0: print 'porcentagem de meia entrada: %.2fº per cent' %((totalMeiaEntrada*100)/total)
+        print ('Total: R$ %.2f' %total)
+      
+        if total>0:
+            porcentagem_de_meia_entrada=(totalMeiaEntrada*100)/total
+            if porcentagem_de_meia_entrada > 40:
+                print 'número de pagantes de meia entrada é maior que 40%'
     
     if opcao =='Q':
         print 'sair'
